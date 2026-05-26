@@ -108,3 +108,25 @@ def update_note(
     db.refresh(db_note)
 
     return db_note
+
+
+@router.get("/{note_id}", response_model=NoteResponse)
+def get_single_note(
+    note_id: int,
+    db: Session = Depends(get_db),
+    current_user_email: str = Depends(get_current_user)
+):
+
+    user = db.query(User).filter(
+        User.email == current_user_email
+    ).first()
+
+    note = db.query(Note).filter(
+        Note.id == note_id,
+        Note.owner_id == user.id
+    ).first()
+
+    if not note:
+        raise HTTPException(status_code=404,detail="Note not found")
+
+    return note
