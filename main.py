@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 
 from app.db import Base, engine
-from app.routes.auth import router as auth_router
-from app.routes.notes import router as notes_router
+from app.routes import auth
+from app.routes import notes
 
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.include_router(auth_router)
-app.include_router(notes_router)
+app.include_router(auth.router, prefix="/auth")
+app.include_router(notes.router, prefix="/notes", tags=["notes"])

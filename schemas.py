@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-
+from typing import Optional
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -30,3 +30,8 @@ class NoteResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+
+class NoteUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
