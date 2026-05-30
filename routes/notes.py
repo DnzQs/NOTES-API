@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from typing import Any
 
 from app.db import get_db
 from app.models import Note, User
-from app.schemas import NoteCreate, NoteResponse
+from app.schemas import NoteCreate, NoteResponse, NoteUpdate
 from app.auth_utils import get_current_user
 
 router = APIRouter(
@@ -15,7 +15,7 @@ router = APIRouter(
 @router.post("/", response_model=NoteResponse)
 def create_note(
     note: NoteCreate,
-    db: Session = Depends(get_db),
+    db: Any = Depends(get_db),
     current_user_email: str = Depends(get_current_user)
 ):
 
@@ -38,7 +38,7 @@ def create_note(
 
 @router.get("/", response_model=list[NoteResponse])
 def get_notes(
-    db: Session = Depends(get_db),
+    db: Any = Depends(get_db),
     current_user_email: str = Depends(get_current_user)
 ):
 
@@ -56,7 +56,7 @@ def get_notes(
 @router.delete("/{note_id}")
 def delete_note(
     note_id: int,
-    db: Session = Depends(get_db),
+    db: Any = Depends(get_db),
     current_user_email: str = Depends(get_current_user)
 ):
 
@@ -84,7 +84,7 @@ def delete_note(
 def update_note(
     note_id: int,
     note_data: NoteUpdate,
-    db: Session = Depends(get_db),
+    db: Any = Depends(get_db),
     current_user_email: str = Depends(get_current_user)
 ):
 
@@ -113,7 +113,7 @@ def update_note(
 @router.get("/{note_id}", response_model=NoteResponse)
 def get_single_note(
     note_id: int,
-    db: Session = Depends(get_db),
+    db: Any = Depends(get_db),
     current_user_email: str = Depends(get_current_user)
 ):
 
